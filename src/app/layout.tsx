@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   },
   description:
     "Conversion landing pages for Time Zone Reifenservice – Pulheim / Köln",
+  icons: {
+    icon: [{ url: "/favicon.webp", type: "image/webp" }],
+    shortcut: "/favicon.webp",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
