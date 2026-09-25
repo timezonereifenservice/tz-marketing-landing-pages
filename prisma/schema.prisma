@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Ad landing form submissions
+model Lead {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  name           String?
+  phone          String
+  email          String?
+  vehicle        String?
+  mileage        String?
+  tireSize       String?
+  preferredDate  String?
+  service        String
+  page           String
+  locale         String   @default("de")
+  meta           Json?
+  emailSent      Boolean  @default(false)
+  emailError     String?
+
+  @@index([createdAt])
+  @@index([service])
+  @@index([page])
+}
+
+/// Event-driven analytics only (no polling / heartbeats)
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  event      String
+  page       String?
+  service    String?
+  locale     String?
+  placement  String?
+  sessionId  String?
+  path       String?
+  referrer   String?
+  userAgent  String?
+  meta       Json?
+
+  @@index([createdAt])
+  @@index([event])
+  @@index([page])
+  @@index([sessionId])
+}

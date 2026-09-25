@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+:root {
+  /* From Time Zone logo: navy + signal red */
+  --tz-navy: #0b3d7a;
+  --tz-navy-deep: #072a54;
+  --tz-navy-soft: #e8eef6;
+  --tz-red: #e30613;
+  --tz-red-deep: #b80510;
+  --tz-red-soft: #fde8ea;
+  --tz-ink: #121826;
+  --tz-muted: #5b6577;
+  --tz-line: #e6ebf2;
+  --tz-surface: #f6f8fb;
+  --tz-white: #ffffff;
+  --tz-whatsapp: #25d366;
+  --tz-whatsapp-deep: #1ebe57;
+  --background: #ffffff;
+  --foreground: #121826;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--tz-red);
+  color: #fff;
+}
+
+.tz-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-wrap: balance;
+  color: var(--tz-navy);
+}
+
+.tz-kicker {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tz-red);
+}
+
+.tz-rule {
+  height: 2px;
+  width: 4.5rem;
+  background: linear-gradient(90deg, var(--tz-red), var(--tz-navy));
+  border-radius: 999px;
+}
+
+.tz-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.85s var(--ease-out),
+    transform 0.85s var(--ease-out);
+}
+
+.tz-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tz-reveal-delay-1 {
+  transition-delay: 0.08s;
+}
+.tz-reveal-delay-2 {
+  transition-delay: 0.16s;
+}
+.tz-reveal-delay-3 {
+  transition-delay: 0.24s;
+}
+
+.tz-img-zoom {
+  overflow: hidden;
+}
+
+.tz-img-zoom img {
+  transition: transform 1.1s var(--ease-out);
+  will-change: transform;
+}
+
+.tz-img-zoom:hover img {
+  transform: scale(1.06);
+}
+
+.tz-lift {
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
+}
+
+.tz-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(11, 61, 122, 0.12);
+}
+
+.tz-btn {
+  transition:
+    transform 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out),
+    border-color 0.25s var(--ease-out),
+    color 0.25s var(--ease-out);
+}
+
+.tz-btn:hover {
+  transform: translateY(-2px);
+}
+
+.tz-btn:active {
+  transform: translateY(0);
+}
+
+@keyframes tz-pulse-red {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(227, 6, 19, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(227, 6, 19, 0);
+  }
+}
+
+.tz-pulse {
+  animation: tz-pulse-red 2.4s ease-out infinite;
+}
+
+.tz-parallax-bg {
+  transform: translateY(var(--parallax-y, 0px));
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .tz-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .tz-pulse {
+    animation: none;
+  }
+
+  .tz-img-zoom:hover img,
+  .tz-lift:hover,
+  .tz-btn:hover {
+    transform: none;
+  }
+}
