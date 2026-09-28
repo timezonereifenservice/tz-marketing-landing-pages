@@ -14,7 +14,7 @@ export function StickyMobileBar({
   const { t } = useLocale();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--tz-line)] bg-white/95 p-3 shadow-[0_-8px_30px_rgba(11,61,122,0.08)] backdrop-blur-xl md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--tz-line)] bg-white/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(11,61,122,0.08)] backdrop-blur-xl md:hidden">
       <div className="flex gap-2">
         <a
           href={telUrl()}

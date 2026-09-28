@@ -26,13 +26,15 @@ export function Reviews({ reviews }: { reviews: Review[] }) {
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        {/* Mobile: horizontal snap scroll · Desktop: grid */}
+        <div className="mt-10 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
           {reviews.map((review, i) => (
             <Reveal
               key={review.name + review.date}
               delay={Math.min(i + 1, 3) as 1 | 2 | 3}
+              className="w-[min(85vw,22rem)] shrink-0 snap-center sm:w-auto sm:shrink"
             >
-              <article className="tz-lift flex h-full flex-col rounded-3xl border border-[var(--tz-line)] bg-white p-6 sm:p-7">
+              <article className="tz-lift flex h-full flex-col rounded-3xl border border-[var(--tz-line)] bg-white p-5 sm:p-7">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-amber-500">★★★★★</span>
                   <span className="rounded-full bg-[var(--tz-red-soft)] px-2.5 py-1 text-[10px] font-bold tracking-wide text-[var(--tz-red)] uppercase">

@@ -13,13 +13,22 @@ model Lead {
   id             String   @id @default(cuid())
   createdAt      DateTime @default(now())
   name           String?
+  firstName      String?
+  lastName       String?
   phone          String
   email          String?
   vehicle        String?
+  brand          String?
+  model          String?
+  year           String?
+  hsn            String?
+  tsn            String?
+  vin            String?
   mileage        String?
   tireSize       String?
   preferredDate  String?
   service        String
+  serviceLabel   String?
   page           String
   locale         String   @default("de")
   meta           Json?
@@ -50,4 +59,5 @@ model AnalyticsEvent {
   @@index([event])
   @@index([page])
   @@index([sessionId])
+  @@index([event, sessionId, page, createdAt])
 }

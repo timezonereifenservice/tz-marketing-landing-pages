@@ -12,15 +12,21 @@ export type FaqItem = {
   a: { de: string; en: string };
 };
 
-export type LeadFormField =
-  | "name"
-  | "phone"
-  | "vehicle"
-  | "mileage"
-  | "tireSize"
-  | "preferredDate"
-  | "transmissionType"
-  | "serviceType";
+export type StatItem = {
+  value: string;
+  label: { de: string; en: string };
+};
+
+export type BeforeAfterItem = {
+  before: { de: string; en: string };
+  after: { de: string; en: string };
+};
+
+export type AdvantageItem = {
+  title: { de: string; en: string };
+  us: { de: string; en: string };
+  others: { de: string; en: string };
+};
 
 export type LandingCopy = {
   slug: string;
@@ -36,10 +42,13 @@ export type LandingCopy = {
   secondaryCta: { de: string; en: string };
   formTitle: { de: string; en: string };
   formSubtitle: { de: string; en: string };
-  formFields: LeadFormField[];
+  serviceLabel: { de: string; en: string };
   formSubmit: { de: string; en: string };
   formSuccess: { de: string; en: string };
   whatsappMessage: { de: string; en: string };
+  stats: StatItem[];
+  beforeAfter: BeforeAfterItem[];
+  advantages: AdvantageItem[];
   sections: {
     id: string;
     title: { de: string; en: string };

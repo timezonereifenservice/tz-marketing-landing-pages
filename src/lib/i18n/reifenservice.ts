@@ -1,7 +1,12 @@
 import type { LandingCopy } from "./types";
+import {
+  sharedAdvantages,
+  sharedExtraReviews,
+  sharedStats,
+} from "./shared-trust";
 
 export const reifenservice: LandingCopy = {
-  slug: "reifenservice-koeln",
+  slug: "reifenservice",
   serviceKey: "tyre",
   metaTitle: {
     de: "Reifenservice Pulheim & Köln | Time Zone Reifenservice",
@@ -54,17 +59,20 @@ export const reifenservice: LandingCopy = {
     en: "Book via WhatsApp",
   },
   formTitle: {
-    de: "Termin / Angebot anfragen",
-    en: "Request appointment / quote",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSubtitle: {
-    de: "Reifengröße oder Fahrzeug angeben – wir melden Verfügbarkeit und Preis.",
-    en: "Share tyre size or vehicle – we confirm availability and price.",
+    de: "Fahrzeugdaten angeben – wir melden Verfügbarkeit und Preis.",
+    en: "Share vehicle details – we confirm availability and price.",
   },
-  formFields: ["name", "phone", "tireSize", "vehicle", "preferredDate"],
+  serviceLabel: {
+    de: "Reifenservice",
+    en: "Tyre service",
+  },
   formSubmit: {
-    de: "Termin anfragen",
-    en: "Request appointment",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSuccess: {
     de: "Danke! Wir melden uns schnell mit Termin und Preis.",
@@ -74,6 +82,56 @@ export const reifenservice: LandingCopy = {
     de: "Hallo Time Zone, ich brauche Reifenservice in Pulheim (Wechsel/Montage/Auswuchten) und möchte einen Termin anfragen.",
     en: "Hello Time Zone, I need tyre service in Pulheim (change/fitting/balancing) and would like an appointment.",
   },
+  stats: sharedStats,
+  beforeAfter: [
+    {
+      before: {
+        de: "Schraube im Reifen / Druckverlust – keine Werkstatt hat kurzfristig Zeit.",
+        en: "Screw in the tyre / pressure loss – no workshop has a short-notice slot.",
+      },
+      after: {
+        de: "Schnelle Hilfe – oft noch am selben Tag wieder mobil (wie in Google-Reviews).",
+        en: "Fast help – often back on the road the same day (as in Google reviews).",
+      },
+    },
+    {
+      before: {
+        de: "Vibrationen, ungleichmäßiger Abrieb, unsicheres Gefühl bei Nässe.",
+        en: "Vibration, uneven wear, unsafe feel in the wet.",
+      },
+      after: {
+        de: "Ausgewuchtete Räder, korrektes Drehmoment, ruhiger Lauf und mehr Grip.",
+        en: "Balanced wheels, correct torque, smooth ride and more grip.",
+      },
+    },
+    {
+      before: {
+        de: "Transporter-Reifen? Andere Werkstätten sagen ab.",
+        en: "Van tyres? Other workshops turn you away.",
+      },
+      after: {
+        de: "Hebebühne bis 5,5 t – Reifenservice auch für Nutzfahrzeuge.",
+        en: "Lift up to 5.5 t – tyre service for commercials too.",
+      },
+    },
+  ],
+  advantages: [
+    {
+      title: {
+        de: "Notfall-Reifenhilfe",
+        en: "Emergency tyre support",
+      },
+      us: {
+        de: "Mehrfach in Reviews gelobt – Hilfe, wenn andere keinen Termin hatten.",
+        en: "Praised in reviews – help when others had no appointment.",
+      },
+      others: {
+        de: "Nur feste Saison-Slots, keine Flexibilität bei Notfällen.",
+        en: "Only fixed seasonal slots, little flexibility in emergencies.",
+      },
+    },
+    ...sharedAdvantages,
+  ],
   sections: [
     {
       id: "services",
@@ -190,6 +248,7 @@ export const reifenservice: LandingCopy = {
         en: "Very good!!! I was very pleased. Thank you for your help.",
       },
     },
+    ...sharedExtraReviews.filter((r) => r.name !== "Barry Green"),
   ],
   faqs: [
     {

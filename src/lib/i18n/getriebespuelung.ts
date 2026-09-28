@@ -1,7 +1,12 @@
 import type { LandingCopy } from "./types";
+import {
+  sharedAdvantages,
+  sharedExtraReviews,
+  sharedStats,
+} from "./shared-trust";
 
 export const getriebespuelung: LandingCopy = {
-  slug: "getriebespuelung-koeln",
+  slug: "getriebespuelung",
   serviceKey: "transmission",
   metaTitle: {
     de: "Getriebespülung Pulheim & Köln | Time Zone Reifenservice",
@@ -54,17 +59,20 @@ export const getriebespuelung: LandingCopy = {
     en: "Book via WhatsApp",
   },
   formTitle: {
-    de: "Festpreis & Termin anfragen",
-    en: "Request fixed price & appointment",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSubtitle: {
-    de: "Kurz ausfüllen – wir melden uns mit Diagnose-Hinweis, Preisrahmen und Termin.",
-    en: "Quick form – we reply with guidance, price range and appointment.",
+    de: "Kurz ausfüllen – wir melden uns mit Preisrahmen und Termin.",
+    en: "Quick form – we reply with price range and appointment.",
   },
-  formFields: ["name", "phone", "vehicle", "mileage", "preferredDate"],
+  serviceLabel: {
+    de: "Getriebespülung",
+    en: "Transmission flush",
+  },
   formSubmit: {
-    de: "Unverbindlich anfragen",
-    en: "Request quote",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSuccess: {
     de: "Danke! Unser Team meldet sich zeitnah mit Ihrem Angebot und einem Terminvorschlag.",
@@ -74,6 +82,62 @@ export const getriebespuelung: LandingCopy = {
     de: "Hallo Time Zone, ich interessiere mich für eine Getriebespülung (Pulheim) und möchte Festpreis / Termin anfragen.",
     en: "Hello Time Zone, I’m interested in a transmission flush (Pulheim) and would like a fixed price / appointment.",
   },
+  stats: [
+    ...sharedStats,
+    {
+      value: "~4 Std.",
+      label: { de: "Typische Dauer Spülung", en: "Typical flush duration" },
+    },
+  ],
+  beforeAfter: [
+    {
+      before: {
+        de: "Ruckeln beim Schalten, verzögerte Gänge, unruhige Drehzahl.",
+        en: "Jerking when shifting, delayed gears, unstable revs.",
+      },
+      after: {
+        de: "Weiches, butterweiches Schalten – oft spürbar schon auf den ersten Metern.",
+        en: "Smooth, butter-soft shifting – often noticeable in the first metres.",
+      },
+    },
+    {
+      before: {
+        de: "Altöl und Abrieb bleiben im Wandler/Kühler (einfacher Ölwechsel).",
+        en: "Old fluid and debris stay in converter/cooler (simple oil change).",
+      },
+      after: {
+        de: "Systemspülung inkl. Leitungen & Kühler – deutlich mehr Altöl entfernt.",
+        en: "System flush incl. lines & cooler – far more old fluid removed.",
+      },
+    },
+    {
+      before: {
+        de: "Angst vor teurem Getriebetausch (oft 4.000–9.000 €).",
+        en: "Fear of expensive gearbox replacement (often €4,000–€9,000).",
+      },
+      after: {
+        de: "Vorbeugende Spülung schützt und kostet typisch 350–1.000 €.",
+        en: "Preventive flush protects and typically costs €350–€1,000.",
+      },
+    },
+  ],
+  advantages: [
+    {
+      title: {
+        de: "Echte Getriebespülung vor Ort",
+        en: "Real transmission flush on site",
+      },
+      us: {
+        de: "Eine der wenigen Werkstätten in der Region mit Spülung vor Ort – auch in Google-Reviews gelobt.",
+        en: "One of the few local workshops offering an on-site flush – praised in Google reviews.",
+      },
+      others: {
+        de: "Oft nur Teilölwechsel oder Weiterleitung an Spezialisten.",
+        en: "Often only a partial oil change or referral elsewhere.",
+      },
+    },
+    ...sharedAdvantages.slice(0, 5),
+  ],
   sections: [
     {
       id: "what",
@@ -169,6 +233,7 @@ export const getriebespuelung: LandingCopy = {
         en: "Super friendly and flexible. Cool: they’re one of the few offering an on-site transmission flush – great value. Total recommendation!",
       },
     },
+    ...sharedExtraReviews,
   ],
   faqs: [
     {

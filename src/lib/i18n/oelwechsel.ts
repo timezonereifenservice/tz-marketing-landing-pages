@@ -1,7 +1,12 @@
 import type { LandingCopy } from "./types";
+import {
+  sharedAdvantages,
+  sharedExtraReviews,
+  sharedStats,
+} from "./shared-trust";
 
 export const oelwechsel: LandingCopy = {
-  slug: "oelwechsel-koeln",
+  slug: "oelwechsel",
   serviceKey: "oil",
   metaTitle: {
     de: "Ölwechsel Pulheim & Köln | Time Zone Reifenservice",
@@ -54,17 +59,20 @@ export const oelwechsel: LandingCopy = {
     en: "Book via WhatsApp",
   },
   formTitle: {
-    de: "Ölwechsel-Termin anfragen",
-    en: "Request oil-change appointment",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSubtitle: {
-    de: "Fahrzeug & Kilometerstand – wir nennen Preisrahmen und den nächsten Slot.",
-    en: "Vehicle & mileage – we confirm price range and the next slot.",
+    de: "Fahrzeugdaten angeben – wir nennen Preisrahmen und den nächsten Slot.",
+    en: "Share vehicle details – we confirm price range and the next slot.",
   },
-  formFields: ["name", "phone", "vehicle", "mileage", "preferredDate"],
+  serviceLabel: {
+    de: "Ölwechsel",
+    en: "Oil change",
+  },
   formSubmit: {
-    de: "Termin anfragen",
-    en: "Request appointment",
+    de: "Angebot anfordern",
+    en: "Request a quote",
   },
   formSuccess: {
     de: "Danke! Wir melden uns mit Termin und Preisrahmen.",
@@ -74,6 +82,46 @@ export const oelwechsel: LandingCopy = {
     de: "Hallo Time Zone, ich möchte einen Ölwechsel inkl. Filter in Pulheim anfragen und einen Termin vereinbaren.",
     en: "Hello Time Zone, I’d like to request an oil change incl. filter in Pulheim and book an appointment.",
   },
+  stats: [
+    ...sharedStats,
+    {
+      value: "30–90 €",
+      label: { de: "Typischer Preisrahmen", en: "Typical price range" },
+    },
+  ],
+  beforeAfter: [
+    {
+      before: {
+        de: "Unruhiger Motorlauf, höheres Verschleißrisiko durch altes Öl.",
+        en: "Rough running, higher wear risk from old oil.",
+      },
+      after: {
+        de: "Frischöl + neuer Filter – bessere Schmierung und ruhigerer Lauf.",
+        en: "Fresh oil + new filter – better lubrication and smoother running.",
+      },
+    },
+    {
+      before: {
+        de: "Lange Wartezeiten in der Vertragswerkstatt.",
+        en: "Long waits at the dealer workshop.",
+      },
+      after: {
+        de: "Oft innerhalb weniger Stunden – klare Preise vorab.",
+        en: "Often within a few hours – clear prices upfront.",
+      },
+    },
+    {
+      before: {
+        de: "Transporter braucht Ölwechsel – zu schwer für viele Hebebühnen.",
+        en: "Van needs an oil change – too heavy for many lifts.",
+      },
+      after: {
+        de: "5,5-t-Hebebühne – Pkw und Nutzfahrzeuge willkommen.",
+        en: "5.5 t lift – cars and commercials welcome.",
+      },
+    },
+  ],
+  advantages: sharedAdvantages,
   sections: [
     {
       id: "benefits",
@@ -157,6 +205,9 @@ export const oelwechsel: LandingCopy = {
         en: "Really nice staff and a very positive talk with the boss. Can only recommend the workshop!",
       },
     },
+    ...sharedExtraReviews.filter(
+      (r) => r.name !== "Peter Füssenich" && r.name !== "Joachim Wolf",
+    ),
   ],
   faqs: [
     {

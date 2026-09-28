@@ -1,89 +1,125 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendLeadEmail } from "@/lib/mail";
+
+export const runtime = "nodejs";
+/** Keep Fluid/serverless warm work bounded for ads traffic */
+export const maxDuration = 20;
+
+function str(value: unknown, max = 200) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.slice(0, max);
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const name = body?.name ? String(body.name).trim() : "";
-    const phone = body?.phone ? String(body.phone).trim() : "";
-    const service = body?.service ? String(body.service).trim() : "unknown";
-    const page = body?.page ? String(body.page).trim() : "unknown";
-    const locale = body?.locale ? String(body.locale).trim() : "de";
+    const firstName = str(body?.firstName, 80);
+    const lastName = str(body?.lastName, 80);
+    const phone = str(body?.phone, 40);
+    const email = str(body?.email, 160);
+    const brand = str(body?.brand, 80);
+    const model = str(body?.model, 80);
+    const year = str(body?.year, 10);
+    const hsn = str(body?.hsn, 20);
+    const tsn = str(body?.tsn, 20);
+    const vin = str(body?.vin, 32);
+    const service = str(body?.service, 40) || "unknown";
+    const serviceLabel = str(body?.serviceLabel, 120);
+    const page = str(body?.page, 120) || "unknown";
+    const locale = str(body?.locale, 8) || "de";
 
-    if (!phone || phone.length < 6) {
+    if (
+      !firstName ||
+      !lastName ||
+      !phone ||
+      phone.length < 6 ||
+      !email ||
+      !brand ||
+      !model ||
+      !year
+    ) {
       return NextResponse.json(
-        { ok: false, error: "Phone required" },
+        { ok: false, error: "Required fields missing" },
         { status: 400 },
       );
     }
 
+    const name = `${firstName} ${lastName}`.trim();
+    const vehicle = [brand, model, year].filter(Boolean).join(" ");
+
     const lead = await prisma.lead.create({
       data: {
-        name: name || null,
+        name,
+        firstName,
+        lastName,
         phone,
-        email: body?.email ? String(body.email).trim() : null,
-        vehicle: body?.vehicle ? String(body.vehicle).trim() : null,
-        mileage: body?.mileage ? String(body.mileage).trim() : null,
-        tireSize: body?.tireSize ? String(body.tireSize).trim() : null,
-        preferredDate: body?.preferredDate
-          ? String(body.preferredDate).trim()
-          : null,
+        email,
+        vehicle,
+        brand,
+        model,
+        year,
+        hsn,
+        tsn,
+        vin,
         service,
+        serviceLabel,
         page,
         locale,
         meta: {
-          userAgent:
-            typeof body?.userAgent === "string" ? body.userAgent.slice(0, 400) : null,
-          referrer:
-            typeof body?.referrer === "string" ? body.referrer.slice(0, 400) : null,
-          sessionId:
-            typeof body?.sessionId === "string" ? body.sessionId.slice(0, 80) : null,
+          userAgent: str(body?.userAgent, 400),
+          referrer: str(body?.referrer, 400),
+          sessionId: str(body?.sessionId, 80),
         },
       },
     });
 
-    // Analytics write only on submit (no intervals)
-    await prisma.analyticsEvent.create({
+    // Fire analytics write in parallel with response path
+    const analyticsPromise = prisma.analyticsEvent.create({
       data: {
         event: "form_submit",
         page,
         service,
         locale,
         placement: "form",
-        sessionId:
-          typeof body?.sessionId === "string" ? body.sessionId.slice(0, 80) : null,
-        path: typeof body?.path === "string" ? body.path.slice(0, 240) : null,
-        referrer:
-          typeof body?.referrer === "string" ? body.referrer.slice(0, 400) : null,
-        userAgent:
-          typeof body?.userAgent === "string" ? body.userAgent.slice(0, 400) : null,
+        sessionId: str(body?.sessionId, 80),
+        path: str(body?.path, 240),
+        referrer: str(body?.referrer, 400),
+        userAgent: str(body?.userAgent, 400),
         meta: { leadId: lead.id },
       },
     });
 
-    let emailSent = false;
-    let emailError: string | null = null;
-    try {
-      await sendLeadEmail(lead);
-      emailSent = true;
-      await prisma.lead.update({
-        where: { id: lead.id },
-        data: { emailSent: true },
-      });
-    } catch (err) {
-      emailError = err instanceof Error ? err.message : "mail_failed";
-      await prisma.lead.update({
-        where: { id: lead.id },
-        data: { emailSent: false, emailError },
-      });
-      console.error("[lead-mail]", emailError);
-    }
+    // SMTP after response — cuts user-visible latency (Vercel Fluid after())
+    after(async () => {
+      try {
+        await analyticsPromise;
+      } catch (err) {
+        console.error("[lead-analytics]", err);
+      }
+
+      try {
+        await sendLeadEmail(lead);
+        await prisma.lead.update({
+          where: { id: lead.id },
+          data: { emailSent: true, emailError: null },
+        });
+      } catch (err) {
+        const emailError = err instanceof Error ? err.message : "mail_failed";
+        await prisma.lead.update({
+          where: { id: lead.id },
+          data: { emailSent: false, emailError },
+        });
+        console.error("[lead-mail]", emailError);
+      }
+    });
 
     return NextResponse.json({
       ok: true,
       id: lead.id,
-      emailSent,
+      emailQueued: true,
     });
   } catch (error) {
     console.error("[lead]", error);

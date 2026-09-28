@@ -3,13 +3,19 @@ import nodemailer from "nodemailer";
 type LeadMailPayload = {
   id: string;
   name?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   phone: string;
   email?: string | null;
   vehicle?: string | null;
-  mileage?: string | null;
-  tireSize?: string | null;
-  preferredDate?: string | null;
+  brand?: string | null;
+  model?: string | null;
+  year?: string | null;
+  hsn?: string | null;
+  tsn?: string | null;
+  vin?: string | null;
   service: string;
+  serviceLabel?: string | null;
   page: string;
   locale: string;
 };
@@ -18,7 +24,6 @@ export async function sendLeadEmail(lead: LeadMailPayload) {
   const host = process.env.SMTP_HOST || "smtp.gmail.com";
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
-  // Gmail app passwords work with or without spaces — normalize
   const pass = process.env.SMTP_PASS?.replace(/\s+/g, "");
   const to = process.env.MAIL_TO || "abubakar.consoledot@gmail.com";
   const from = process.env.MAIL_FROM || user;
@@ -34,23 +39,36 @@ export async function sendLeadEmail(lead: LeadMailPayload) {
     auth: { user, pass },
   });
 
-  const subject = `[Lead] ${lead.service} · ${lead.name || lead.phone} · ${lead.page}`;
+  const displayName =
+    lead.name ||
+    [lead.firstName, lead.lastName].filter(Boolean).join(" ") ||
+    lead.phone;
+  const serviceName = lead.serviceLabel || lead.service;
+  const subject = `[Lead] ${serviceName} · ${displayName} · ${lead.page}`;
 
   const text = [
     "Neue Anfrage von einer Ads-Landingpage",
     "",
     `ID: ${lead.id}`,
-    `Service: ${lead.service}`,
+    `Service: ${serviceName} (${lead.service})`,
     `Seite: ${lead.page}`,
     `Sprache: ${lead.locale}`,
     "",
-    `Name: ${lead.name || "—"}`,
+    "— Persönliche Informationen —",
+    `Vorname: ${lead.firstName || "—"}`,
+    `Nachname: ${lead.lastName || "—"}`,
+    `Name: ${displayName}`,
     `Telefon: ${lead.phone}`,
     `E-Mail: ${lead.email || "—"}`,
-    `Fahrzeug: ${lead.vehicle || "—"}`,
-    `Kilometerstand: ${lead.mileage || "—"}`,
-    `Reifengröße: ${lead.tireSize || "—"}`,
-    `Wunschtermin: ${lead.preferredDate || "—"}`,
+    "",
+    "— Fahrzeug & Service —",
+    `Marke: ${lead.brand || "—"}`,
+    `Modell: ${lead.model || "—"}`,
+    `Baujahr: ${lead.year || "—"}`,
+    `2.1 HSN: ${lead.hsn || "—"}`,
+    `2.2 TSN: ${lead.tsn || "—"}`,
+    `FIN/VIN: ${lead.vin || "—"}`,
+    `Fahrzeug (kurz): ${lead.vehicle || "—"}`,
     "",
     `Zeit: ${new Date().toISOString()}`,
   ].join("\n");

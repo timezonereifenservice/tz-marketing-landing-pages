@@ -1,16 +1,37 @@
 export const IMAGES = {
-  hero: "/images/hero-workshop.png",
-  transmission: "/images/service-transmission.png",
-  tyres: "/images/service-tyres.png",
-  oil: "/images/service-oil.png",
-  transporter: "/images/transporter-lift.png",
   logo: "/brand/logo.png",
+  workshop: "/images/workshop-interior.webp",
+  transporter: "/images/transporter-lift.webp",
+  heroes: {
+    transmission: "/images/hero-transmission.webp",
+    tyre: "/images/hero-tyres.webp",
+    oil: "/images/hero-oil.webp",
+  },
+  services: {
+    transmission: "/images/service-transmission.webp",
+    tyre: "/images/service-tyres.webp",
+    oil: "/images/service-oil.webp",
+  },
 } as const;
 
-export function serviceImage(
-  key: "transmission" | "tyre" | "oil",
-): string {
-  if (key === "transmission") return IMAGES.transmission;
-  if (key === "tyre") return IMAGES.tyres;
-  return IMAGES.oil;
+export type ServiceKey = "transmission" | "tyre" | "oil";
+
+export function serviceHero(key: ServiceKey): string {
+  return IMAGES.heroes[key];
+}
+
+export function serviceImage(key: ServiceKey): string {
+  return IMAGES.services[key];
+}
+
+/** Gallery band: service close-up, lift/transporter, workshop */
+export function serviceGallery(key: ServiceKey): {
+  src: string;
+  kind: "service" | "lift" | "workshop";
+}[] {
+  return [
+    { src: serviceImage(key), kind: "service" },
+    { src: IMAGES.transporter, kind: "lift" },
+    { src: IMAGES.workshop, kind: "workshop" },
+  ];
 }

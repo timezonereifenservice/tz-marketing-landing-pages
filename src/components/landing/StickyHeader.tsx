@@ -13,8 +13,8 @@ export function StickyHeader({ whatsappMessage }: { whatsappMessage: string }) {
   const { t } = useLocale();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--tz-line)] bg-white/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.25rem] max-w-[1400px] items-center justify-between gap-3 px-4 sm:h-[4.75rem] sm:px-6 lg:px-10">
+    <header className="border-b border-[var(--tz-line)] bg-white/95 backdrop-blur-xl">
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-3 px-4 sm:h-16 sm:px-6 lg:px-10">
         <a href="#top" className="group flex min-w-0 items-center">
           <Image
             src={IMAGES.logo}

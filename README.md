@@ -16,9 +16,9 @@ Restart Cursor (or reload the window) once so Agent Skills index the new folders
 
 | Service | URL path |
 |---------|----------|
-| Getriebespülung | `/lp/getriebespuelung-koeln` |
-| Reifenservice | `/lp/reifenservice-koeln` |
-| Ölwechsel | `/lp/oelwechsel-koeln` |
+| Getriebespülung | `/lp/getriebespuelung` |
+| Reifenservice | `/lp/reifenservice` |
+| Ölwechsel | `/lp/oelwechsel` |
 
 `/` redirects to https://timezone-reifenservice.de/
 
@@ -39,7 +39,7 @@ Restart Cursor (or reload the window) once so Agent Skills index the new folders
 npm run dev
 ```
 
-Open e.g. http://localhost:3000/lp/getriebespuelung-koeln
+Open e.g. http://localhost:3000/lp/getriebespuelung
 
 ## Env (optional)
 
@@ -54,8 +54,8 @@ NEXT_PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXX
 2. Add domain `landingpage.timezone-reifenservice.de` in Vercel
 3. In one.com DNS: CNAME `landingpage` → value shown by Vercel
 4. Point ads to:
-   - `https://landingpage.timezone-reifenservice.de/lp/getriebespuelung-koeln`
-   - `https://landingpage.timezone-reifenservice.de/lp/reifenservice-koeln`
-   - `https://landingpage.timezone-reifenservice.de/lp/oelwechsel-koeln`
+   - `https://offers.timezone-reifenservice.de/lp/getriebespuelung`
+   - `https://offers.timezone-reifenservice.de/lp/reifenservice`
+   - `https://offers.timezone-reifenservice.de/lp/oelwechsel`
 
 Do **not** change the apex A/AAAA records for WordPress.

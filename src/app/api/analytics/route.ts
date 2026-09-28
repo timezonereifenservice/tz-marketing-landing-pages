@@ -12,7 +12,7 @@ const ALLOWED = new Set([
 
 /**
  * Single write per user action — no polling / heartbeats.
- * Keeps Supabase + Vercel load minimal.
+ * Client already session-dedupes page_view; skip extra SELECT to save DB CPU.
  */
 export async function POST(request: Request) {
   try {
@@ -21,22 +21,6 @@ export async function POST(request: Request) {
 
     if (!ALLOWED.has(event)) {
       return NextResponse.json({ ok: false, error: "Invalid event" }, { status: 400 });
-    }
-
-    // Deduplicate rapid page_view retries for same session+page (e.g. React Strict Mode)
-    if (event === "page_view" && body?.sessionId && body?.page) {
-      const recent = await prisma.analyticsEvent.findFirst({
-        where: {
-          event: "page_view",
-          sessionId: String(body.sessionId),
-          page: String(body.page),
-          createdAt: { gte: new Date(Date.now() - 30_000) },
-        },
-        select: { id: true },
-      });
-      if (recent) {
-        return NextResponse.json({ ok: true, deduped: true });
-      }
     }
 
     await prisma.analyticsEvent.create({
@@ -57,6 +41,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[analytics]", error);
+    // Fail soft — never block UX for analytics
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
