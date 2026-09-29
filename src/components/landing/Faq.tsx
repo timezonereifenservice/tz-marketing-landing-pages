@@ -44,7 +44,7 @@ export function Faq({ items }: { items: FaqItem[] }) {
                     <span
                       className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-sm font-bold transition duration-300 ${
                         isOpen
-                          ? "bg-[var(--tz-red)] text-white"
+                          ? "bg-[var(--tz-navy)] text-white"
                           : "bg-[var(--tz-surface)] text-[var(--tz-navy)]"
                       }`}
                     >

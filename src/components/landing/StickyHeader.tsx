@@ -41,7 +41,7 @@ export function StickyHeader({ whatsappMessage }: { whatsappMessage: string }) {
           <a
             href={telUrl()}
             onClick={() => trackEvent("click_call", { placement: "header" })}
-            className="tz-btn tz-pulse inline-flex cursor-pointer items-center gap-2 rounded-full bg-[var(--tz-red)] px-4 py-2.5 text-[11px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[var(--tz-red-deep)]"
+            className="tz-btn tz-pulse inline-flex cursor-pointer items-center gap-2 rounded-full bg-[var(--tz-navy)] px-4 py-2.5 text-[11px] font-bold tracking-[0.1em] text-white uppercase hover:bg-[var(--tz-navy-deep)]"
           >
             <PhoneIcon className="h-4 w-4" />
             <span className="hidden md:inline">{SITE.phoneDisplay}</span>

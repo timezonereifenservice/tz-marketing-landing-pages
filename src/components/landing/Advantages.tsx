@@ -26,7 +26,7 @@ export function Advantages({ items }: { items: AdvantageItem[] }) {
           <p className="text-[11px] font-bold tracking-[0.16em] text-[var(--tz-muted)] uppercase">
             &nbsp;
           </p>
-          <p className="rounded-xl bg-[var(--tz-red)] px-4 py-2.5 text-center text-[11px] font-bold tracking-[0.14em] text-white uppercase">
+          <p className="rounded-xl bg-[var(--tz-navy)] px-4 py-2.5 text-center text-[11px] font-bold tracking-[0.14em] text-white uppercase">
             {t(ui.usLabel)}
           </p>
           <p className="rounded-xl border border-[var(--tz-line)] bg-[var(--tz-surface)] px-4 py-2.5 text-center text-[11px] font-bold tracking-[0.14em] text-[var(--tz-muted)] uppercase">
@@ -45,8 +45,8 @@ export function Advantages({ items }: { items: AdvantageItem[] }) {
                   </h3>
                 </div>
                 <div className="grid gap-0 sm:grid-cols-2">
-                  <div className="border-b border-[var(--tz-line)] bg-[var(--tz-red-soft)]/50 px-5 py-4 sm:border-b-0 sm:border-r">
-                    <p className="text-[10px] font-bold tracking-[0.16em] text-[var(--tz-red)] uppercase">
+                  <div className="border-b border-[var(--tz-line)] bg-[var(--tz-navy-soft)]/70 px-5 py-4 sm:border-b-0 sm:border-r">
+                    <p className="text-[10px] font-bold tracking-[0.16em] text-[var(--tz-navy)] uppercase">
                       {t(ui.usLabel)}
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-[var(--tz-navy)]">
@@ -71,7 +71,7 @@ export function Advantages({ items }: { items: AdvantageItem[] }) {
                     {t(item.title)}
                   </h3>
                 </div>
-                <div className="rounded-xl border border-[var(--tz-red)]/25 bg-white px-4 py-3.5">
+                <div className="rounded-xl border border-[var(--tz-navy)]/20 bg-white px-4 py-3.5">
                   <p className="text-sm leading-relaxed text-[var(--tz-navy)]">
                     {t(item.us)}
                   </p>

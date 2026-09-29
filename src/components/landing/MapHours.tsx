@@ -48,7 +48,7 @@ export function MapHours({ whatsappMessage }: { whatsappMessage: string }) {
                 <a
                   href={mailtoUrl()}
                   onClick={() => trackEvent("click_email", { placement: "map" })}
-                  className="cursor-pointer text-lg font-medium text-[var(--tz-navy)] underline-offset-4 transition hover:text-[var(--tz-red)] hover:underline"
+                  className="cursor-pointer text-lg font-medium text-[var(--tz-navy)] underline-offset-4 transition hover:text-[var(--tz-navy-deep)] hover:underline"
                 >
                   {SITE.email}
                 </a>
@@ -60,7 +60,7 @@ export function MapHours({ whatsappMessage }: { whatsappMessage: string }) {
             <a
               href={telUrl()}
               onClick={() => trackEvent("click_call", { placement: "map" })}
-              className="tz-btn inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-[var(--tz-red)] px-6 text-[11px] font-bold tracking-[0.12em] text-white uppercase hover:bg-[var(--tz-red-deep)]"
+              className="tz-btn inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full bg-[var(--tz-navy)] px-6 text-[11px] font-bold tracking-[0.12em] text-white uppercase hover:bg-[var(--tz-navy-deep)]"
             >
               <PhoneIcon className="h-4 w-4" />
               {SITE.phoneDisplay}

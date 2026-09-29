@@ -22,7 +22,7 @@ import { StickyMobileBar } from "./StickyMobileBar";
 import { PageViewTracker } from "./PageViewTracker";
 import { PhoneIcon, WhatsAppIcon } from "@/components/icons";
 
-function SoftParallax({ src, alt }: { src: string; alt: string }) {
+function SoftParallax({ src }: { src: string; alt: string }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,20 +44,21 @@ function SoftParallax({ src, alt }: { src: string; alt: string }) {
   }, []);
 
   return (
-    <div ref={ref} className="tz-img-zoom absolute inset-0">
+    <div ref={ref} className="tz-img-zoom absolute inset-0" aria-hidden>
       <div className="tz-parallax-bg absolute inset-[-8%]">
         <Image
           src={src}
-          alt={alt}
+          alt=""
           fill
           priority
-          quality={75}
+          quality={70}
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-[center_30%] opacity-40 sm:opacity-45"
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/92 to-white/55 lg:to-white/35" />
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/40" />
+      {/* Soft white wash — faint photo atmosphere, text stays crisp */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/92 via-white/78 to-white/55 lg:via-white/70 lg:to-white/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/25 to-white/55" />
     </div>
   );
 }
@@ -108,13 +109,13 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
         <StickyHeader whatsappMessage={wa} />
       </div>
 
-      {/* Hero: copy + compact form (balanced, no page-long sticky column) */}
-      <section className="relative">
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      {/* Hero: soft service photo wash behind copy + form */}
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <SoftParallax src={heroImage} alt={t(copy.h1)} />
         </div>
 
-        <div className="relative mx-auto grid max-w-[1400px] items-start gap-8 px-4 py-8 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-10 lg:py-12">
+        <div className="relative z-10 mx-auto grid max-w-[1400px] items-start gap-8 px-4 py-8 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-10 lg:py-12">
           <div className="min-w-0 lg:col-span-7">
             <Reveal>
               <p className="tz-kicker">{t(copy.badge)}</p>
@@ -143,7 +144,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
                     key={item.de}
                     className="flex items-start gap-2.5 rounded-2xl border border-[var(--tz-line)] bg-white/85 px-3.5 py-2.5 text-[13px] font-medium leading-snug text-[var(--tz-navy)] shadow-sm backdrop-blur-sm"
                   >
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--tz-red)] text-[10px] font-bold text-white">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--tz-navy)] text-[10px] font-bold text-white">
                       ✓
                     </span>
                     {t(item)}
@@ -155,7 +156,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
                 <a
                   href={telUrl()}
                   onClick={() => trackEvent("click_call", { placement: "hero" })}
-                  className="tz-btn inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full bg-[var(--tz-red)] px-6 text-[12px] font-bold tracking-[0.12em] text-white uppercase hover:bg-[var(--tz-red-deep)]"
+                  className="tz-btn inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full bg-[var(--tz-navy)] px-6 text-[12px] font-bold tracking-[0.12em] text-white uppercase hover:bg-[var(--tz-navy-deep)]"
                 >
                   <PhoneIcon className="h-4 w-4" />
                   {t(copy.primaryCta)} · {SITE.phoneDisplay}
@@ -288,7 +289,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
                     delay={Math.min(i + 1, 3) as 1 | 2 | 3}
                   >
                     <div className="tz-lift h-full rounded-3xl border border-[var(--tz-line)] bg-white p-5 sm:p-6">
-                      <p className="text-[11px] font-bold tracking-[0.18em] text-[var(--tz-red)]">
+                      <p className="text-[11px] font-bold tracking-[0.18em] text-[var(--tz-navy)]">
                         {String(i + 1).padStart(2, "0")}
                       </p>
                       <h3 className="tz-display mt-3 text-[1.25rem]">
@@ -349,7 +350,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
       <Faq items={copy.faqs} />
       <MapHours whatsappMessage={wa} />
 
-      <section className="bg-[var(--tz-red)] py-14 text-white sm:py-16">
+      <section className="bg-[var(--tz-navy)] py-14 text-white sm:py-16">
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:px-10">
           <div>
             <h2 className="tz-display text-[clamp(1.9rem,5vw,3.2rem)] !text-white">

@@ -37,7 +37,7 @@ export function Reviews({ reviews }: { reviews: Review[] }) {
               <article className="tz-lift flex h-full flex-col rounded-3xl border border-[var(--tz-line)] bg-white p-5 sm:p-7">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-amber-500">★★★★★</span>
-                  <span className="rounded-full bg-[var(--tz-red-soft)] px-2.5 py-1 text-[10px] font-bold tracking-wide text-[var(--tz-red)] uppercase">
+                  <span className="rounded-full bg-[var(--tz-navy-soft)] px-2.5 py-1 text-[10px] font-bold tracking-wide text-[var(--tz-navy)] uppercase">
                     {t(ui.verified)}
                   </span>
                 </div>

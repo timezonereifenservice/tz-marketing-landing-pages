@@ -60,7 +60,7 @@ export function OfferMarquee({ copy }: { copy: LandingCopy }) {
   const next = () => setIndex((i) => (i + 1) % offers.length);
 
   return (
-    <div className="relative z-[1] border-b border-[var(--tz-red-deep)]/20 bg-[var(--tz-red)] text-white">
+    <div className="relative z-[1] border-b border-[var(--tz-navy-deep)]/25 bg-[var(--tz-navy)] text-white">
       <div className="mx-auto flex max-w-[1400px] items-center gap-1 px-1 sm:gap-2 sm:px-3 lg:px-6">
         <button
           type="button"
@@ -115,21 +115,6 @@ export function OfferMarquee({ copy }: { copy: LandingCopy }) {
         >
           <Chevron dir="right" />
         </button>
-      </div>
-
-      <div className="flex justify-center gap-1.5 pb-1.5 sm:pb-2">
-        {offers.map((offer, i) => (
-          <button
-            key={offer.de}
-            type="button"
-            aria-label={`Offer ${i + 1}`}
-            onClick={() => setIndex(i)}
-            className={[
-              "h-1 rounded-full transition-all",
-              i === index ? "w-4 bg-white" : "w-1.5 bg-white/40 hover:bg-white/70",
-            ].join(" ")}
-          />
-        ))}
       </div>
     </div>
   );

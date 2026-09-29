@@ -25,7 +25,7 @@ function FieldLabel({
     >
       {children}
       {required ? (
-        <span className="text-[var(--tz-red)]" aria-hidden>
+        <span className="text-[var(--tz-alert)]" aria-hidden>
           {" "}
           *
         </span>
@@ -296,13 +296,13 @@ export function LeadForm({ copy }: { copy: LandingCopy }) {
       </fieldset>
 
       {error ? (
-        <p className="text-sm font-medium text-[var(--tz-red)]">{error}</p>
+        <p className="text-sm font-medium text-[var(--tz-alert)]">{error}</p>
       ) : null}
 
       <button
         type="submit"
         disabled={pending}
-        className="tz-btn flex min-h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--tz-red)] text-[12px] font-bold tracking-[0.14em] text-white uppercase hover:bg-[var(--tz-red-deep)] disabled:opacity-60"
+        className="tz-btn flex min-h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--tz-navy)] text-[12px] font-bold tracking-[0.14em] text-white uppercase hover:bg-[var(--tz-navy-deep)] disabled:opacity-60"
       >
         {pending ? "…" : t(ui.formQuoteSubmit)}
       </button>

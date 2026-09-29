@@ -19,7 +19,7 @@ export function StickyMobileBar({
         <a
           href={telUrl()}
           onClick={() => trackEvent("click_call", { placement: "mobile_bar" })}
-          className="tz-pulse flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-[var(--tz-red)] text-[11px] font-bold tracking-[0.08em] text-white uppercase"
+          className="tz-pulse flex min-h-12 flex-1 cursor-pointer items-center justify-center gap-2 rounded-full bg-[var(--tz-navy)] text-[11px] font-bold tracking-[0.08em] text-white uppercase"
         >
           <PhoneIcon className="h-4 w-4 shrink-0" />
           {SITE.phoneDisplay}
