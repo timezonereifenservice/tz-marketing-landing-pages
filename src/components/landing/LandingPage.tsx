@@ -96,7 +96,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
   return (
     <div
       id="top"
-      className="min-h-screen overflow-x-clip bg-white text-[var(--foreground)] pb-[5.5rem] md:pb-0"
+      className="min-h-screen overflow-x-clip bg-white text-[var(--foreground)]"
     >
       <PageViewTracker
         page={copy.slug}
