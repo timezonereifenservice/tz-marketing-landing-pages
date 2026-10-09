@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import {
+  getRequestGeoDevice,
+  strUtm,
+} from "@/lib/request-context";
 
 const ALLOWED = new Set([
   "page_view",
   "click_call",
   "click_whatsapp",
   "click_email",
+  "click_form",
+  "click_map",
   "form_submit",
   "form_success",
+  "form_error",
 ]);
 
 /**
@@ -23,6 +30,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "Invalid event" }, { status: 400 });
     }
 
+    const ctx = getRequestGeoDevice(
+      request,
+      typeof body?.userAgent === "string" ? body.userAgent : null,
+    );
+
     await prisma.analyticsEvent.create({
       data: {
         event,
@@ -33,7 +45,16 @@ export async function POST(request: Request) {
         sessionId: body.sessionId ? String(body.sessionId).slice(0, 80) : null,
         path: body.path ? String(body.path).slice(0, 240) : null,
         referrer: body.referrer ? String(body.referrer).slice(0, 400) : null,
-        userAgent: body.userAgent ? String(body.userAgent).slice(0, 400) : null,
+        userAgent: ctx.userAgent,
+        country: ctx.country,
+        city: ctx.city,
+        region: ctx.region,
+        device: ctx.device,
+        browser: ctx.browser,
+        os: ctx.os,
+        utmSource: strUtm(body.utmSource),
+        utmMedium: strUtm(body.utmMedium),
+        utmCampaign: strUtm(body.utmCampaign),
         meta: body.meta && typeof body.meta === "object" ? body.meta : undefined,
       },
     });

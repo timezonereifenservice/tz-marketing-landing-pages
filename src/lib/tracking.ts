@@ -3,8 +3,11 @@ type EventName =
   | "click_call"
   | "click_whatsapp"
   | "click_email"
+  | "click_form"
+  | "click_map"
   | "form_submit"
-  | "form_success";
+  | "form_success"
+  | "form_error";
 
 declare global {
   interface Window {
@@ -14,6 +17,7 @@ declare global {
 }
 
 const SESSION_KEY = "tz_session_id";
+const UTM_KEY = "tz_utm";
 
 let analyticsContext: {
   page?: string;
@@ -46,6 +50,51 @@ function getSessionId() {
   }
 }
 
+function captureUtmFromUrl() {
+  if (typeof window === "undefined") return;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get("utm_source")?.trim();
+    const utmMedium = params.get("utm_medium")?.trim();
+    const utmCampaign = params.get("utm_campaign")?.trim();
+    if (!utmSource && !utmMedium && !utmCampaign) return;
+    sessionStorage.setItem(
+      UTM_KEY,
+      JSON.stringify({
+        utmSource: utmSource || undefined,
+        utmMedium: utmMedium || undefined,
+        utmCampaign: utmCampaign || undefined,
+      }),
+    );
+  } catch {
+    // ignore
+  }
+}
+
+export function getStoredUtm(): {
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+} {
+  if (typeof window === "undefined") return {};
+  try {
+    captureUtmFromUrl();
+    const raw = sessionStorage.getItem(UTM_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    return {
+      utmSource:
+        typeof parsed.utmSource === "string" ? parsed.utmSource : undefined,
+      utmMedium:
+        typeof parsed.utmMedium === "string" ? parsed.utmMedium : undefined,
+      utmCampaign:
+        typeof parsed.utmCampaign === "string" ? parsed.utmCampaign : undefined,
+    };
+  } catch {
+    return {};
+  }
+}
+
 type TrackParams = Record<string, string | number | boolean | undefined> & {
   page?: string;
   service?: string;
@@ -63,12 +112,13 @@ export function trackEvent(name: EventName, params?: TrackParams) {
   const page = params?.page || analyticsContext.page;
   const service = params?.service || analyticsContext.service;
   const locale = params?.locale || analyticsContext.locale || "de";
+  const utm = getStoredUtm();
 
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: name, page, service, locale, ...params });
+  window.dataLayer.push({ event: name, page, service, locale, ...params, ...utm });
 
   if (typeof window.gtag === "function") {
-    window.gtag("event", name, { page, service, locale, ...params });
+    window.gtag("event", name, { page, service, locale, ...params, ...utm });
   }
 
   const payload = {
@@ -81,6 +131,7 @@ export function trackEvent(name: EventName, params?: TrackParams) {
     path: window.location.pathname,
     referrer: document.referrer || undefined,
     userAgent: navigator.userAgent,
+    ...utm,
   };
 
   const body = JSON.stringify(payload);
@@ -111,6 +162,7 @@ export function trackPageView(params: {
   if (typeof window === "undefined") return;
 
   setAnalyticsContext(params);
+  captureUtmFromUrl();
 
   const key = `tz_pv_${params.page}`;
   try {

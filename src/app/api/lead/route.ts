@@ -1,6 +1,10 @@
 import { after, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { sendLeadEmail } from "@/lib/mail";
+import {
+  getRequestGeoDevice,
+  strUtm,
+} from "@/lib/request-context";
 
 export const runtime = "nodejs";
 /** Keep Fluid/serverless warm work bounded for ads traffic */
@@ -30,6 +34,12 @@ export async function POST(request: Request) {
     const serviceLabel = str(body?.serviceLabel, 120);
     const page = str(body?.page, 120) || "unknown";
     const locale = str(body?.locale, 8) || "de";
+    const sessionId = str(body?.sessionId, 80);
+    const path = str(body?.path, 240);
+    const referrer = str(body?.referrer, 400);
+    const utmSource = strUtm(body?.utmSource);
+    const utmMedium = strUtm(body?.utmMedium);
+    const utmCampaign = strUtm(body?.utmCampaign);
 
     if (
       !firstName ||
@@ -49,6 +59,10 @@ export async function POST(request: Request) {
 
     const name = `${firstName} ${lastName}`.trim();
     const vehicle = [brand, model, year].filter(Boolean).join(" ");
+    const ctx = getRequestGeoDevice(
+      request,
+      typeof body?.userAgent === "string" ? body.userAgent : null,
+    );
 
     const lead = await prisma.lead.create({
       data: {
@@ -68,10 +82,21 @@ export async function POST(request: Request) {
         serviceLabel,
         page,
         locale,
+        sessionId,
+        country: ctx.country,
+        city: ctx.city,
+        region: ctx.region,
+        device: ctx.device,
+        browser: ctx.browser,
+        os: ctx.os,
+        utmSource,
+        utmMedium,
+        utmCampaign,
         meta: {
-          userAgent: str(body?.userAgent, 400),
-          referrer: str(body?.referrer, 400),
-          sessionId: str(body?.sessionId, 80),
+          userAgent: ctx.userAgent,
+          referrer,
+          sessionId,
+          path,
         },
       },
     });
@@ -84,10 +109,19 @@ export async function POST(request: Request) {
         service,
         locale,
         placement: "form",
-        sessionId: str(body?.sessionId, 80),
-        path: str(body?.path, 240),
-        referrer: str(body?.referrer, 400),
-        userAgent: str(body?.userAgent, 400),
+        sessionId,
+        path,
+        referrer,
+        userAgent: ctx.userAgent,
+        country: ctx.country,
+        city: ctx.city,
+        region: ctx.region,
+        device: ctx.device,
+        browser: ctx.browser,
+        os: ctx.os,
+        utmSource,
+        utmMedium,
+        utmCampaign,
         meta: { leadId: lead.id },
       },
     });

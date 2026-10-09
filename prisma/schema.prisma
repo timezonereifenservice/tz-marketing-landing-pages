@@ -31,6 +31,16 @@ model Lead {
   serviceLabel   String?
   page           String
   locale         String   @default("de")
+  sessionId      String?
+  country        String?
+  city           String?
+  region         String?
+  device         String?
+  browser        String?
+  os             String?
+  utmSource      String?
+  utmMedium      String?
+  utmCampaign    String?
   meta           Json?
   emailSent      Boolean  @default(false)
   emailError     String?
@@ -38,26 +48,41 @@ model Lead {
   @@index([createdAt])
   @@index([service])
   @@index([page])
+  @@index([sessionId])
+  @@index([country])
+  @@index([device])
 }
 
 /// Event-driven analytics only (no polling / heartbeats)
 model AnalyticsEvent {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  event      String
-  page       String?
-  service    String?
-  locale     String?
-  placement  String?
-  sessionId  String?
-  path       String?
-  referrer   String?
-  userAgent  String?
-  meta       Json?
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  event       String
+  page        String?
+  service     String?
+  locale      String?
+  placement   String?
+  sessionId   String?
+  path        String?
+  referrer    String?
+  userAgent   String?
+  country     String?
+  city        String?
+  region      String?
+  device      String?
+  browser     String?
+  os          String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  meta        Json?
 
   @@index([createdAt])
   @@index([event])
   @@index([page])
   @@index([sessionId])
   @@index([event, sessionId, page, createdAt])
+  @@index([createdAt, country])
+  @@index([createdAt, device])
+  @@index([event, placement])
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { LandingCopy } from "@/lib/i18n/types";
 import { ui } from "@/lib/i18n/ui";
+import { trackEvent } from "@/lib/tracking";
 import { useLocale } from "./LocaleProvider";
 
 type OfferLine = { de: string; en: string };
@@ -90,12 +91,18 @@ export function OfferMarquee({ copy }: { copy: LandingCopy }) {
                     {" · "}
                     <a
                       href="#anfrage"
+                      onClick={() =>
+                        trackEvent("click_form", { placement: "marquee" })
+                      }
                       className="underline decoration-white/50 underline-offset-2 hover:decoration-white lg:hidden"
                     >
                       {t(ui.formQuoteSubmit)}
                     </a>
                     <a
                       href="#anfrage-desktop"
+                      onClick={() =>
+                        trackEvent("click_form", { placement: "marquee" })
+                      }
                       className="hidden underline decoration-white/50 underline-offset-2 hover:decoration-white lg:inline"
                     >
                       {t(ui.formQuoteSubmit)}

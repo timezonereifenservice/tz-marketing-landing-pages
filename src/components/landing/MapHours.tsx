@@ -79,6 +79,7 @@ export function MapHours({ whatsappMessage }: { whatsappMessage: string }) {
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("click_map", { placement: "map" })}
               className="tz-btn inline-flex min-h-12 cursor-pointer items-center rounded-full border border-[var(--tz-line)] bg-white px-6 text-[11px] font-bold tracking-[0.12em] text-[var(--tz-navy)] uppercase hover:border-[var(--tz-navy)]"
             >
               {t(ui.openMap)}

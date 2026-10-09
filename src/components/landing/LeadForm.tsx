@@ -3,7 +3,11 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import type { LandingCopy } from "@/lib/i18n/types";
 import { ui } from "@/lib/i18n/ui";
-import { getAnalyticsSessionId, trackEvent } from "@/lib/tracking";
+import {
+  getAnalyticsSessionId,
+  getStoredUtm,
+  trackEvent,
+} from "@/lib/tracking";
 import { useLocale } from "./LocaleProvider";
 
 const inputClass =
@@ -72,6 +76,7 @@ export function LeadForm({ copy }: { copy: LandingCopy }) {
           path: window.location.pathname,
           referrer: document.referrer || undefined,
           userAgent: navigator.userAgent,
+          ...getStoredUtm(),
         }),
       });
 
@@ -87,7 +92,7 @@ export function LeadForm({ copy }: { copy: LandingCopy }) {
       });
       setSubmitted(true);
     } catch {
-      trackEvent("form_submit", {
+      trackEvent("form_error", {
         service: copy.serviceKey,
         locale,
         page: copy.slug,

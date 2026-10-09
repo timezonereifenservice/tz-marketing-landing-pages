@@ -332,12 +332,18 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
             </p>
             <a
               href="#anfrage"
+              onClick={() =>
+                trackEvent("click_form", { placement: "price" })
+              }
               className="tz-btn mt-8 inline-flex min-h-12 cursor-pointer items-center rounded-full bg-[var(--tz-red)] px-7 text-[12px] font-bold tracking-[0.14em] text-white uppercase hover:bg-[var(--tz-red-deep)] lg:hidden"
             >
               {t(copy.formSubmit)}
             </a>
             <a
               href="#anfrage-desktop"
+              onClick={() =>
+                trackEvent("click_form", { placement: "price" })
+              }
               className="tz-btn mt-8 hidden min-h-12 cursor-pointer items-center rounded-full bg-[var(--tz-red)] px-7 text-[12px] font-bold tracking-[0.14em] text-white uppercase hover:bg-[var(--tz-red-deep)] lg:inline-flex"
             >
               {t(copy.formSubmit)}
