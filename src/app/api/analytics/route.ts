@@ -12,9 +12,14 @@ const ALLOWED = new Set([
   "click_email",
   "click_form",
   "click_map",
+  "click_locale",
+  "form_start",
   "form_submit",
   "form_success",
   "form_error",
+  "scroll_depth",
+  "section_view",
+  "outbound_main_site",
 ]);
 
 /**

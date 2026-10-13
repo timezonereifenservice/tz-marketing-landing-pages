@@ -11,7 +11,7 @@ export function Faq({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="bg-white py-20 sm:py-28">
+    <section className="bg-white py-20 sm:py-28" data-track-section="faq">
       <div className="mx-auto max-w-[880px] px-4 sm:px-6 lg:px-10">
         <Reveal>
           <p className="tz-kicker">FAQ</p>

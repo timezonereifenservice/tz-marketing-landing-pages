@@ -5,9 +5,14 @@ type EventName =
   | "click_email"
   | "click_form"
   | "click_map"
+  | "click_locale"
+  | "form_start"
   | "form_submit"
   | "form_success"
-  | "form_error";
+  | "form_error"
+  | "scroll_depth"
+  | "section_view"
+  | "outbound_main_site";
 
 declare global {
   interface Window {
@@ -26,11 +31,11 @@ let analyticsContext: {
 } = {};
 
 export function setAnalyticsContext(ctx: {
-  page: string;
-  service: string;
+  page?: string;
+  service?: string;
   locale?: string;
 }) {
-  analyticsContext = ctx;
+  analyticsContext = { ...analyticsContext, ...ctx };
 }
 
 function getSessionId() {
@@ -57,13 +62,33 @@ function captureUtmFromUrl() {
     const utmSource = params.get("utm_source")?.trim();
     const utmMedium = params.get("utm_medium")?.trim();
     const utmCampaign = params.get("utm_campaign")?.trim();
-    if (!utmSource && !utmMedium && !utmCampaign) return;
+    const utmContent = params.get("utm_content")?.trim();
+    const utmTerm = params.get("utm_term")?.trim();
+    const gclid = params.get("gclid")?.trim();
+    if (
+      !utmSource &&
+      !utmMedium &&
+      !utmCampaign &&
+      !utmContent &&
+      !utmTerm &&
+      !gclid
+    ) {
+      return;
+    }
+    const existingRaw = sessionStorage.getItem(UTM_KEY);
+    const existing = existingRaw
+      ? (JSON.parse(existingRaw) as Record<string, string>)
+      : {};
     sessionStorage.setItem(
       UTM_KEY,
       JSON.stringify({
-        utmSource: utmSource || undefined,
-        utmMedium: utmMedium || undefined,
-        utmCampaign: utmCampaign || undefined,
+        ...existing,
+        ...(utmSource ? { utmSource } : {}),
+        ...(utmMedium ? { utmMedium } : {}),
+        ...(utmCampaign ? { utmCampaign } : {}),
+        ...(utmContent ? { utmContent } : {}),
+        ...(utmTerm ? { utmTerm } : {}),
+        ...(gclid ? { gclid } : {}),
       }),
     );
   } catch {
@@ -75,6 +100,9 @@ export function getStoredUtm(): {
   utmSource?: string;
   utmMedium?: string;
   utmCampaign?: string;
+  utmContent?: string;
+  utmTerm?: string;
+  gclid?: string;
 } {
   if (typeof window === "undefined") return {};
   try {
@@ -89,10 +117,31 @@ export function getStoredUtm(): {
         typeof parsed.utmMedium === "string" ? parsed.utmMedium : undefined,
       utmCampaign:
         typeof parsed.utmCampaign === "string" ? parsed.utmCampaign : undefined,
+      utmContent:
+        typeof parsed.utmContent === "string" ? parsed.utmContent : undefined,
+      utmTerm: typeof parsed.utmTerm === "string" ? parsed.utmTerm : undefined,
+      gclid: typeof parsed.gclid === "string" ? parsed.gclid : undefined,
     };
   } catch {
     return {};
   }
+}
+
+/** Fire once per session for a given key (scroll depth, form_start, section). */
+export function trackOnce(
+  onceKey: string,
+  name: EventName,
+  params?: TrackParams,
+) {
+  if (typeof window === "undefined") return;
+  try {
+    const storageKey = `tz_once_${onceKey}`;
+    if (sessionStorage.getItem(storageKey)) return;
+    sessionStorage.setItem(storageKey, "1");
+  } catch {
+    // still fire if storage blocked
+  }
+  trackEvent(name, params);
 }
 
 type TrackParams = Record<string, string | number | boolean | undefined> & {
@@ -131,7 +180,17 @@ export function trackEvent(name: EventName, params?: TrackParams) {
     path: window.location.pathname,
     referrer: document.referrer || undefined,
     userAgent: navigator.userAgent,
-    ...utm,
+    utmSource: utm.utmSource,
+    utmMedium: utm.utmMedium,
+    utmCampaign: utm.utmCampaign,
+    meta:
+      utm.gclid || utm.utmContent || utm.utmTerm
+        ? {
+            ...(utm.gclid ? { gclid: utm.gclid } : {}),
+            ...(utm.utmContent ? { utmContent: utm.utmContent } : {}),
+            ...(utm.utmTerm ? { utmTerm: utm.utmTerm } : {}),
+          }
+        : undefined,
   };
 
   const body = JSON.stringify(payload);

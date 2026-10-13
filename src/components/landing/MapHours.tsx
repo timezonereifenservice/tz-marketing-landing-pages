@@ -12,7 +12,7 @@ export function MapHours({ whatsappMessage }: { whatsappMessage: string }) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.address)}`;
 
   return (
-    <section className="bg-white py-20 sm:py-28">
+    <section className="bg-white py-20 sm:py-28" data-track-section="map">
       <div className="mx-auto grid max-w-[1400px] gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-10">
         <Reveal>
           <p className="tz-kicker">{t(ui.location)}</p>

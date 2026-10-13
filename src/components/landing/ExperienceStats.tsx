@@ -10,7 +10,10 @@ export function ExperienceStats({ stats }: { stats: StatItem[] }) {
   const count = stats.length;
 
   return (
-    <section className="relative overflow-hidden bg-[var(--tz-navy)] py-16 text-white sm:py-20">
+    <section
+      className="relative overflow-hidden bg-[var(--tz-navy)] py-16 text-white sm:py-20"
+      data-track-section="stats"
+    >
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{

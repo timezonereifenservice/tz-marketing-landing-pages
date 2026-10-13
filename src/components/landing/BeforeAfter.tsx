@@ -9,7 +9,10 @@ export function BeforeAfter({ items }: { items: BeforeAfterItem[] }) {
   const { t } = useLocale();
 
   return (
-    <section className="bg-white py-20 sm:py-28">
+    <section
+      className="bg-white py-20 sm:py-28"
+      data-track-section="before_after"
+    >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
         <Reveal>
           <p className="tz-kicker">Results</p>

@@ -7,6 +7,7 @@ import {
   getAnalyticsSessionId,
   getStoredUtm,
   trackEvent,
+  trackOnce,
 } from "@/lib/tracking";
 import { useLocale } from "./LocaleProvider";
 
@@ -55,12 +56,28 @@ export function LeadForm({ copy }: { copy: LandingCopy }) {
   const [error, setError] = useState<string | null>(null);
   const [showExtra, setShowExtra] = useState(false);
 
+  function onFormStart() {
+    trackOnce(`form_start_${copy.slug}`, "form_start", {
+      page: copy.slug,
+      service: copy.serviceKey,
+      locale,
+      placement: "form",
+    });
+  }
+
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setPending(true);
     setError(null);
 
     const data = Object.fromEntries(new FormData(e.currentTarget).entries());
+
+    trackEvent("form_submit", {
+      service: copy.serviceKey,
+      locale,
+      page: copy.slug,
+      placement: "form",
+    });
 
     try {
       const res = await fetch("/api/lead", {
@@ -120,7 +137,11 @@ export function LeadForm({ copy }: { copy: LandingCopy }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
+    <form
+      onSubmit={onSubmit}
+      onFocusCapture={onFormStart}
+      className="space-y-3"
+    >
       <div>
         <p className="tz-kicker">Anfrage</p>
         <h2 className="tz-display mt-1 text-[clamp(1.25rem,2.2vw,1.55rem)]">

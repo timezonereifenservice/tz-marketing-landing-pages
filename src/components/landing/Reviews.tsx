@@ -10,7 +10,10 @@ export function Reviews({ reviews }: { reviews: Review[] }) {
   const { t } = useLocale();
 
   return (
-    <section className="bg-[var(--tz-surface)] py-20 sm:py-28">
+    <section
+      className="bg-[var(--tz-surface)] py-20 sm:py-28"
+      data-track-section="reviews"
+    >
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-10">
         <Reveal>
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">

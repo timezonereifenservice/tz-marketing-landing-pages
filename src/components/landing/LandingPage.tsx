@@ -11,6 +11,7 @@ import { Advantages } from "./Advantages";
 import { BeforeAfter } from "./BeforeAfter";
 import { ExperienceStats } from "./ExperienceStats";
 import { Faq } from "./Faq";
+import { EngagementTracker } from "./EngagementTracker";
 import { LeadForm } from "./LeadForm";
 import { LocaleProvider, useLocale } from "./LocaleProvider";
 import { MapHours } from "./MapHours";
@@ -103,6 +104,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
         service={copy.serviceKey}
         locale={locale}
       />
+      <EngagementTracker page={copy.slug} service={copy.serviceKey} />
 
       <div className="sticky top-0 z-50">
         <OfferMarquee copy={copy} />
@@ -110,7 +112,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
       </div>
 
       {/* Hero: soft service photo wash behind copy + form */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden" data-track-section="hero">
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <SoftParallax src={heroImage} alt={t(copy.h1)} />
         </div>
@@ -202,7 +204,10 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
       </section>
 
       {/* Full-width gallery — no longer cramped beside the form */}
-      <section className="border-y border-[var(--tz-line)] bg-white py-10">
+      <section
+        className="border-y border-[var(--tz-line)] bg-white py-10"
+        data-track-section="gallery"
+      >
         <div className="mx-auto grid max-w-[1400px] gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:px-10">
           {[
             { src: gallery[0].src, label: t(copy.h1) },
@@ -239,6 +244,7 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
       {copy.sections.map((section, sIndex) => (
         <section
           key={section.id}
+          data-track-section={section.id}
           className={`py-16 sm:py-24 ${
             sIndex % 2 === 1 ? "bg-[var(--tz-surface)]" : "bg-white"
           }`}
@@ -307,7 +313,10 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
         </section>
       ))}
 
-      <section className="relative overflow-hidden border-y border-[var(--tz-line)] bg-[var(--tz-navy)] py-16 text-white sm:py-20">
+      <section
+        className="relative overflow-hidden border-y border-[var(--tz-line)] bg-[var(--tz-navy)] py-16 text-white sm:py-20"
+        data-track-section="pricing"
+      >
         <div className="absolute inset-0 opacity-25">
           <Image
             src={IMAGES.transporter}
@@ -356,7 +365,10 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
       <Faq items={copy.faqs} />
       <MapHours whatsappMessage={wa} />
 
-      <section className="bg-[var(--tz-navy)] py-14 text-white sm:py-16">
+      <section
+        className="bg-[var(--tz-navy)] py-14 text-white sm:py-16"
+        data-track-section="final_cta"
+      >
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:px-10">
           <div>
             <h2 className="tz-display text-[clamp(1.9rem,5vw,3.2rem)] !text-white">
@@ -411,6 +423,9 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
               className="cursor-pointer transition hover:text-[var(--tz-navy)]"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("outbound_main_site", { placement: "impressum" })
+              }
             >
               {t(ui.footerLegal)}
             </a>
@@ -419,6 +434,9 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
               className="cursor-pointer transition hover:text-[var(--tz-navy)]"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("outbound_main_site", { placement: "datenschutz" })
+              }
             >
               {t(ui.footerPrivacy)}
             </a>
@@ -427,6 +445,9 @@ function LandingInner({ copy }: { copy: LandingCopy }) {
               className="cursor-pointer transition hover:text-[var(--tz-navy)]"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("outbound_main_site", { placement: "main_site" })
+              }
             >
               timezone-reifenservice.de
             </a>
