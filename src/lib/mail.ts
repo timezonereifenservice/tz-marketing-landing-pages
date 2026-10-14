@@ -21,12 +21,14 @@ type LeadMailPayload = {
 };
 
 export async function sendLeadEmail(lead: LeadMailPayload) {
-  const host = process.env.SMTP_HOST || "smtp.gmail.com";
-  const port = Number(process.env.SMTP_PORT || 587);
-  const user = process.env.SMTP_USER;
+  // one.com SMTP: send.one.com · 465 SSL (or 587 STARTTLS)
+  const host = process.env.SMTP_HOST || "send.one.com";
+  const port = Number(process.env.SMTP_PORT || 465);
+  const user = process.env.SMTP_USER || "info@timezone-reifenservice.de";
   const pass = process.env.SMTP_PASS?.replace(/\s+/g, "");
-  const to = process.env.MAIL_TO || "abubakar.consoledot@gmail.com";
-  const from = process.env.MAIL_FROM || user;
+  const to = process.env.MAIL_TO || "info@timezone-reifenservice.de";
+  const from =
+    process.env.MAIL_FROM || `Time Zone Leads <${user}>`;
 
   if (!user || !pass || !to) {
     throw new Error("SMTP is not configured");
@@ -36,6 +38,7 @@ export async function sendLeadEmail(lead: LeadMailPayload) {
     host,
     port,
     secure: port === 465,
+    requireTLS: port === 587,
     auth: { user, pass },
   });
 
